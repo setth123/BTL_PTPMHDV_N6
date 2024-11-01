@@ -1,0 +1,91 @@
+<link rel="stylesheet" href="assets/css/content.css">
+
+<div class="details">
+    <div class="recentOrders">
+        <div class="cardHeader">
+            <h2>Car Management</h2>
+            <!-- Dropdowns for selecting Brand and Version with Filter button -->
+            <div>
+                <select id="brandFilter">
+                    <option value="">Tên xe</option>
+                    <option value="Star Refrigerator">Star Refrigerator</option>
+                    <option value="Dell Laptop">Dell Laptop</option>
+                    <option value="Apple Watch">Apple Watch</option>
+                    <option value="Addidas Shoes">Addidas Shoes</option>
+                </select>
+
+                <select id="versionFilter">
+                    <option value="">Phiên bản</option>
+                    <option value="Paid">Paid</option>
+                    <option value="Due">Due</option>
+                </select>
+
+                <button onclick="filterTable()">Filter</button>
+            </div>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <td>STT</td>
+                    <td>Tên</td>
+                    <td>Phiên bản</td>
+                    <td>Ảnh</td>
+                </tr>
+            </thead>
+
+            <tbody id="carTable">
+                <tr>
+                    <td>1</td>
+                    <td>Star Refrigerator</td>
+                    <td>Paid</td>
+                    <td><span class="status delivered">Delivered</span></td>
+                </tr>
+
+                <tr>
+                    <td>2</td>
+                    <td>Dell Laptop</td>
+                    <td>Due</td>
+                    <td><span class="status pending">Pending</span></td>
+                </tr>
+
+                <tr>
+                    <td>3</td>
+                    <td>Apple Watch</td>
+                    <td>Paid</td>
+                    <td><span class="status return">Return</span></td>
+                </tr>
+
+                <tr>
+                    <td>4</td>
+                    <td>Addidas Shoes</td>
+                    <td>Due</td>
+                    <td><span class="status inProgress">In Progress</span></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    function filterTable() {
+        // Get the selected values from the dropdowns
+        const brandFilter = document.getElementById("brandFilter").value;
+        const versionFilter = document.getElementById("versionFilter").value;
+
+        // Get all rows in the table
+        const rows = document.querySelectorAll("#carTable tr");
+
+        rows.forEach(row => {
+            const brandCell = row.cells[1].textContent;
+            const versionCell = row.cells[2].textContent;
+
+            // Check if the row matches the selected filters
+            const matchesBrand = !brandFilter || brandCell === brandFilter;
+            const matchesVersion = !versionFilter || versionCell === versionFilter;
+
+            // Show or hide row based on match
+            row.style.display = matchesBrand && matchesVersion ? "" : "none";
+        });
+    }
+</script>
