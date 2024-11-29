@@ -1,0 +1,59 @@
+/* Container cho dropdown */
+.dropdown-container {
+    display: flex;
+    flex-direction: column;
+    width: 200px;
+}
+
+/* Style cho dropdown khi chưa mở */
+.dropdown {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border: 2px solid #ccc;
+    border-radius: 10px; /* Bo tròn nhẹ */
+    cursor: pointer;
+    background-color: #fff;
+    transition: border-color 0.3s ease;
+}
+
+/* Text trong dropdown */
+.dropdown-text {
+    font-size: 16px;
+    color: #333;
+}
+
+/* Mũi tên trong dropdown */
+.arrow {
+    font-size: 18px;
+    color: #333;
+}
+
+/* Menu dropdown khi mở */
+.dropdown-menu {
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 10px; /* Bo tròn cho menu */
+    background-color: #fff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Mục menu */
+.menu-item {
+    padding: 10px;
+    font-size: 16px;
+    color: #333;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* Màu nền khi hover vào mục menu */
+.menu-item:hover {
+    background-color: #f1f1f1;
+}
+
+/* Khi dropdown mở, viền sẽ đổi màu xanh */
+.dropdown.open {
+    border-color: blue;
+}

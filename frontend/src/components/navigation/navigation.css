@@ -1,0 +1,22 @@
+.navbar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color:transparent; /* Màu nền nhẹ cho navbar */
+    padding: 10px 0;
+    margin-left: 20%;
+}
+
+.nav-item {
+    color: black; /* Chữ màu đen */
+    text-decoration: none; /* Xóa bỏ gạch chân mặc định */
+    margin: 0 20px;
+    font-size: 18px;
+    font-weight: bold;
+    transition: border-bottom 0.3s ease; /* Thêm hiệu ứng khi di chuột */
+}
+
+/* Khi di chuột vào các mục */
+.nav-item:hover {
+    border-bottom: 2px solid black; /* Gạch chân phía dưới */
+}
