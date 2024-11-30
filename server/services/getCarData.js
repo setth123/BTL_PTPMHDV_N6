@@ -1,5 +1,6 @@
 import CarVersion from '../models/CarVersion.js'
-const getCars=async(carID=null,field)=>{
+import Car from '../models/Car.js'
+export const getCars=async(carID=null,field)=>{
     try{
         if(carID===null){
             const carData=await CarVersion.find(field);
@@ -13,4 +14,13 @@ const getCars=async(carID=null,field)=>{
         return null;
     }
 }
-export default getCars;
+export const getCarType=async()=>{
+    try{
+        const carData=await Car.find({},'_id name');
+        return carData;
+    }
+    catch(err){
+        console.log(err.message);
+        return null;
+    }
+}
