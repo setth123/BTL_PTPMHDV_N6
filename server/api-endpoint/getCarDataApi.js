@@ -13,13 +13,13 @@ carDtRouter.get("/cars",async(req,res)=>{
 })
 
 carDtRouter.get("/:carId/:field",async(req,res)=>{
-    const {carID,field}=req.body;
+    const {carId,field}=req.params;
     try{
         let data;
-        if(carID=='*'){
-            data=await getCars(field);
+        if(carId=='*'){
+            data=await getCars(carId,field);
         }
-        else data=await getCars(carID,field);
+        else data=await getCars(carId,field);
         res.status(200).json(data)
     }
     catch(err){

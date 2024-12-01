@@ -3,10 +3,11 @@ import './selectInput.css'
 const SelectInput = ({data,name,onChange}) => {
     const [isOpen,setIsOpen]=useState(false);
     const [options,setOptions]=useState([]);
-    const [selectedValue, setSelectedValue] = useState(null);
+    const [selectedValue, setSelectedValue] = useState([]);
+    const [selectedName,setSelectedName]=useState(null);
     useEffect(() => {
-        if (data && Array.isArray(data)) {
-            setOptions(data);  
+        if (data && typeof data === 'object') {
+            setOptions(Object.entries(data));  
         }
     }, [data]);  
     
@@ -14,11 +15,12 @@ const SelectInput = ({data,name,onChange}) => {
         setIsOpen(!isOpen); // Đổi trạng thái khi click
     };
 
-    const handleSelect = (value) => {
-        setSelectedValue(value);
+    const handleSelect = (key) => {
+        setSelectedValue(key.value.id);
+        setSelectedName(key.value.name);
         setIsOpen(false); // Đóng dropdown sau khi chọn
         if (onChange) {
-            onChange(value); // Gọi hàm onChange nếu có, truyền giá trị đã chọn
+            onChange(key.value.id); // Gọi hàm onChange nếu có, truyền giá trị đã chọn
         }
     };
 
@@ -28,14 +30,14 @@ const SelectInput = ({data,name,onChange}) => {
                 className={`dropdown ${isOpen ? "open" : ""}`} // Thêm class 'open' khi dropdown mở
                 onClick={toggleDropdown}
             >
-                <span className="dropdown-text">{selectedValue ? selectedValue : name}</span>
+                <span className="dropdown-text">{selectedName ? selectedName : name}</span>
                 <span className="arrow">{isOpen ? "▲" : "▼"}</span> {/* Hiển thị mũi tên */}
             </div>
             {isOpen && (
                 <div className="dropdown-menu">
-                    {options.map((option,index)=>(
-                        <div key={index} className="menu-item" onClick={() => handleSelect(option)}>
-                            {option}
+                    {options.map(([key,value])=>(
+                        <div key={key} className="menu-item" onClick={() => handleSelect({key,value})}>
+                            {value.name}
                         </div>
                     ))}
                 </div>
