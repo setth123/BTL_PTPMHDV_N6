@@ -4,7 +4,7 @@ const Navigation = () => {
     return (
         <div className='navbar'>
             <a href="#home" className="nav-item">Tính giá trả góp</a>
-            <a href="/recommendation" className="nav-item">So sánh</a>
+            <a href="/recommendation" className="nav-item">Gợi ý</a>
             <a href="/chart" className="nav-item">Biểu đồ thông tin xe</a>
             <a href="#contact" className="nav-item">Biểu đồ thông tin ngân hàng</a>
         </div>

@@ -5,24 +5,38 @@ const CarRecommendation = () => {
   const [downPayment, setDownPayment] = useState("");
   const [monthlyPayment, setMonthlyPayment] = useState("");
   const [recommendedCars, setRecommendedCars] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    // Giả sử có một hàm gợi ý xe dựa trên số tiền trả trước và trả hàng tháng
-    const cars = getRecommendedCars(downPayment, monthlyPayment);
-    setRecommendedCars(cars);
-  };
 
-  const getRecommendedCars = (downPayment, monthlyPayment) => {
-    // Hàm gợi ý xe (mô phỏng dữ liệu)
-    const cars = [
-      { name: "VinFast Lux A2.0", price: 1000000 },
-      { name: "VinFast VF e34", price: 800000 },
-      { name: "VinFast VF 8", price: 1500000 },
-    ];
+    setLoading(true);
+    setError(null);
 
-    return cars.filter((car) => car.price <= downPayment + monthlyPayment * 12);
+    try {
+      const response = await fetch("http://localhost:4000/recommendations", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          downPayment: parseInt(downPayment),
+          monthlyPayment: parseInt(monthlyPayment),
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Không thể lấy dữ liệu từ server");
+      }
+
+      const data = await response.json();
+      setRecommendedCars(data);
+    } catch (err) {
+      setError("Đã có lỗi xảy ra. Vui lòng thử lại.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -52,12 +66,16 @@ const CarRecommendation = () => {
         <button type="submit" className="submit-button">Gửi</button>
       </form>
 
+      {loading && <p>Đang tải...</p>}
+
+      {error && <p className="error">{error}</p>}
+
       {recommendedCars.length > 0 && (
         <div className="car-suggestions">
           <h3>Các mẫu xe gợi ý:</h3>
           <ul>
             {recommendedCars.map((car, index) => (
-              <li key={index}>{car.name} - {car.price} VND</li>
+              <li key={index}>{car.carName} - {car.monthlyPayment} VND/tháng</li>
             ))}
           </ul>
         </div>
