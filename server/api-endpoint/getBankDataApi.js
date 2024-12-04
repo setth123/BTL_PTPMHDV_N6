@@ -1,8 +1,8 @@
 import express from "express"
-import getBanks from "../services/getBankData";
+import getBanks from "../services/getBankData.js";
 const bankDtRouter=express.Router();
 bankDtRouter.get("/:field",async(req,res)=>{
-    const field=req.body;
+    const {field}=req.params;
     try{
         const data=await getBanks(field)
         res.status(200).json(data)

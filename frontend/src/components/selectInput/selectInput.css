@@ -16,6 +16,7 @@
     cursor: pointer;
     background-color: #fff;
     transition: border-color 0.3s ease;
+    z-index: 10;
 }
 
 /* Text trong dropdown */

@@ -2,14 +2,15 @@ import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 import carDtRouter from "./api-endpoint/getCarDataApi.js";
+import bankDtRouter from "./api-endpoint/getBankDataApi.js";
 
 const app=express();
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
-app.use('/chart',carDtRouter)
-
+app.use('/carChart',carDtRouter)
+app.use('/bankChart',bankDtRouter)
 mongoose.connect("mongodb+srv://thanhtkcb2004:ksiuOWOBVmMF6sP5@cluster0.uuuqs.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
 .then(async()=>{
     console.log("Successfully connected to the database");
