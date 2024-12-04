@@ -1,0 +1,78 @@
+.car-display-container {
+    padding: 60px 20px;
+    margin: auto;
+    width: 80%;
+    position: relative;
+}
+
+/* Nút điều hướng */
+.slider-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+    background-color: rgba(0, 0, 0, 0.363);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    color: #fff;
+}
+
+.slider-arrow.prev {
+    left: -50px;
+}
+
+.slider-arrow.next {
+    right: -50px;
+}
+
+.car-item {
+    position: relative;
+    text-align: center;
+    padding: 10px;
+    transition: transform 0.5s ease;
+}
+
+/* Ảnh và overlay */
+.car-image {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.car-item:hover .car-image {
+    transform: scale(1.2);
+    opacity: 0.2; /* Làm mờ ảnh */
+}
+
+.car-overlay {
+    position: relative;
+}
+
+.car-name-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.678);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.car-item:hover .car-name-overlay {
+    opacity: 1; /* Hiển thị tên xe khi hover */
+}
+
+/* Căn giữa slider */
+.slick-list {
+    margin: auto;
+    overflow: hidden;
+}
