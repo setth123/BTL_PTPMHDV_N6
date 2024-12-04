@@ -1,22 +1,27 @@
-const axios = require("axios");
+import axios from "axios";
 
 /**
- * Hàm lấy dữ liệu từ các API
+ * Service lấy dữ liệu từ các API
  */
-const fetchData = async () => {
+export const fetchCarData = async () => {
   try {
-    const [carVersionsResponse, ratesResponse] = await Promise.all([
-      axios.get("http://localhost:3000/carVer"), // API lấy danh sách phiên bản xe
-      axios.get("http://localhost:3000/rate"), // API lấy danh sách lãi suất
-    ]);
-
-    const carVersions = carVersionsResponse.data;
-    const rates = ratesResponse.data;
-
-    return { carVersions, rates };
+    const carVersionsResponse = await axios.get("http://localhost:3000/carVer");
+    console.log("Fetched car data:", carVersionsResponse.data);
+    return carVersionsResponse.data;
   } catch (error) {
-    console.error("Lỗi khi lấy dữ liệu từ API:", error);
-    throw new Error("Không thể lấy dữ liệu từ API");
+    console.error("Lỗi khi lấy dữ liệu carVer:", error);
+    throw new Error("Không thể lấy dữ liệu carVer");
+  }
+};
+
+export const fetchRateData = async () => {
+  try {
+    const ratesResponse = await axios.get("http://localhost:3000/rate");
+    console.log("Fetched rate data:", ratesResponse.data);
+    return ratesResponse.data;
+  } catch (error) {
+    console.error("Lỗi khi lấy dữ liệu rate:", error);
+    throw new Error("Không thể lấy dữ liệu rate");
   }
 };
 
@@ -26,52 +31,58 @@ const fetchData = async () => {
  * @param {number} monthlyPayment - Số tiền có thể trả mỗi tháng
  * @returns {Array} - Danh sách gợi ý xe
  */
-const getRecommendations = async (downPayment, monthlyPayment) => {
-  const { carVersions, rates } = await fetchData();
-  const recommendations = [];
+export const getRecommendations = async (downPayment, monthlyPayment) => {
+  try {
+    const [carVersions, rates] = await Promise.all([fetchCarData(), fetchRateData()]);
+    const recommendations = [];
 
-  for (const carVersion of carVersions) {
-    const carPrice = parseInt(carVersion.price); // Giá xe từ API
-    const loanAmount = carPrice - downPayment; // Số tiền cần vay
+    console.log("Car Versions: ", carVersions);
+    console.log("Rates: ", rates);
 
-    if (loanAmount <= 0) {
-      // Nếu không cần vay thì xe này hợp lệ ngay
-      recommendations.push({
-        carName: carVersion.name,
-        price: carPrice,
-        term: 0,
-        monthlyPayment: 0,
+    for (const carVersion of carVersions) {
+      const carPrice = parseInt(carVersion.price); // Giá xe từ API
+      const loanAmount = carPrice - downPayment; // Số tiền cần vay
+
+      if (loanAmount <= 0) {
+        recommendations.push({
+          carName: carVersion.name,
+          price: carPrice,
+          term: 0,
+          monthlyPayment: 0,
+        });
+        continue;
+      }
+
+      // Tìm ngân hàng có lãi suất thấp nhất
+      const minRateBank = rates.reduce((lowest, bank) => {
+        return bank.Rate < lowest.Rate ? bank : lowest;
       });
-      continue;
-    }
-    // Tìm ngân hàng có lãi suất thấp nhất
-    const minRateBank = rates.reduce((lowest, bank) => {
-        return (bank.Rate < lowest.Rate) ? bank : lowest;
-    });
 
-    const lowestInterestRate = minRateBank.Rate;
-    const monthlyRate = lowestInterestRate / 100 / 12; // Lãi suất hàng tháng của ngân hàng có lãi suất thấp nhất
+      const lowestInterestRate = minRateBank.Rate;
+      const monthlyRate = lowestInterestRate / 100 / 12; // Lãi suất hàng tháng
 
-    for (let years = 1; years <= 8; years++) {
+      for (let years = 1; years <= 8; years++) {
         const term = years * 12; // Số tháng
         const monthlyInstallment =
-        loanAmount * (monthlyRate / (1 - Math.pow(1 + monthlyRate, -term))); // Công thức tính M
+          loanAmount * (monthlyRate / (1 - Math.pow(1 + monthlyRate, -term)));
 
         if (monthlyInstallment <= monthlyPayment) {
-        recommendations.push({
+          recommendations.push({
             carName: carVersion.name,
             price: carPrice,
-            bankName: minRateBank.name, // Tên ngân hàng có lãi suất thấp nhất
-            interestRate: lowestInterestRate, // Lãi suất của ngân hàng
+            bankName: minRateBank.name,
+            interestRate: lowestInterestRate,
             term: years,
             monthlyPayment: monthlyInstallment.toFixed(2),
-        });
-        break; // Ngừng thử các kỳ hạn khác sau khi tìm được kỳ hạn phù hợp
+          });
+          break; // Dừng khi tìm được kỳ hạn phù hợp
         }
+      }
     }
-}
 
-return recommendations;
+    return recommendations;
+  } catch (error) {
+    console.error("Lỗi trong quá trình gợi ý:", error);
+    throw new Error("Không thể tạo danh sách gợi ý");
+  }
 };
-
-module.exports = { getRecommendations };

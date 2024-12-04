@@ -1,5 +1,5 @@
 import express from "express";
-import getRecommendations from "../services/recommendService"; // Đảm bảo rằng bạn đang import đúng
+import {getRecommendations} from "../services/recommendService.js"; // Đảm bảo rằng bạn đang import đúng
 
 const carRecommendRouter = express.Router();
 
