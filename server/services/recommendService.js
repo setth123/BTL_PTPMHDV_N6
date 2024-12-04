@@ -25,19 +25,25 @@ export const fetchRateData = async () => {
   }
 };
 
-/**
- * Hàm gợi ý xe dựa trên thông tin tài chính
- * @param {number} downPayment - Số tiền trả trước
- * @param {number} monthlyPayment - Số tiền có thể trả mỗi tháng
- * @returns {Array} - Danh sách gợi ý xe
- */
+
 export const getRecommendations = async (downPayment, monthlyPayment) => {
   try {
-    const [carVersions, rates] = await Promise.all([fetchCarData(), fetchRateData()]);
-    const recommendations = [];
-
-    console.log("Car Versions: ", carVersions);
-    console.log("Rates: ", rates);
+    if (typeof downPayment !== 'number' || typeof monthlyPayment !== 'number') {
+      throw new Error('Invalid input: downPayment and monthlyPayment must be numbers');
+    }
+    
+    const [carVersions, rates] = await Promise.all([
+      fetchCarData(), 
+      fetchRateData()
+      ]).catch(error => {
+      console.error('Promise.all error:', error);
+      throw error;
+    });
+    
+    // Additional data validation
+    if (!carVersions || !rates || carVersions.length === 0 || rates.length === 0) {
+     throw new Error('No car versions or rates data available');
+    }
 
     for (const carVersion of carVersions) {
       const carPrice = parseInt(carVersion.price); // Giá xe từ API
@@ -82,7 +88,12 @@ export const getRecommendations = async (downPayment, monthlyPayment) => {
 
     return recommendations;
   } catch (error) {
-    console.error("Lỗi trong quá trình gợi ý:", error);
-    throw new Error("Không thể tạo danh sách gợi ý");
-  }
+      console.error('Detailed error in getRecommendations:', {
+      message: error.message,
+      stack: error.stack,
+      downPayment,
+      monthlyPayment
+      });
+      throw error;
+    }
 };

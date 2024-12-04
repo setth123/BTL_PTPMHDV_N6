@@ -6,30 +6,44 @@ const carRecommendRouter = express.Router();
 // Endpoint để gợi ý xe dựa trên số tiền trả trước và số tiền trả hàng tháng
 carRecommendRouter.post('/', async (req, res) => {
     try {
-        const { downPayment, monthlyPayment } = req.body; // Dữ liệu từ form được gửi lên từ client
-
-        // Kiểm tra dữ liệu đầu vào
-        if (typeof downPayment !== 'number' || typeof monthlyPayment !== 'number') {
-            return res.status(400).json({ error: "Số tiền trả trước và số tiền trả hàng tháng phải là số hợp lệ." });
-        }
-
-        // Gọi hàm getRecommendations để lấy danh sách gợi ý
+        const { downPayment, monthlyPayment } = req.body;
+    
+         if (typeof downPayment !== 'number' || typeof monthlyPayment !== 'number') {
+            return res.status(400).json({ 
+            error: "Invalid input",
+            details: "Down payment and monthly payment must be numbers"
+        });
+    }
+    
+    try {
         const recommendations = await getRecommendations(downPayment, monthlyPayment);
         
-        // Kiểm tra nếu có gợi ý xe
+        
         if (recommendations.length === 0) {
-            return res.status(404).json({ message: "Không tìm thấy xe phù hợp với tài chính của bạn." });
-        }
-
-        // Trả về danh sách gợi ý xe
-        return res.status(201).json({
-            message: 'Dữ liệu gợi ý xe đã được tìm thấy thành công.',
-            data: recommendations
+        return res.status(404).json({ 
+        message: "No matching car recommendations found",
+        details: { downPayment, monthlyPayment }
         });
-
+    }
+    
+    return res.status(201).json({
+        message: 'Car recommendations successfully retrieved',
+        data: recommendations
+    });
+    
+    } catch (recommendationError) {
+        console.error('Recommendation generation error:', recommendationError);
+        return res.status(500).json({ 
+        message: "Failed to generate car recommendations",
+        details: recommendationError.message
+        });
+    }
     } catch (err) {
-        console.error("Lỗi khi lấy gợi ý xe:", err);
-        return res.status(500).json({ message: err.message });
+        console.error("Unexpected error in car recommendation endpoint:", err);
+        return res.status(500).json({ 
+        message: "Internal server error", 
+        details: err.message 
+        });
     }
 });
 
