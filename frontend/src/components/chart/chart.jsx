@@ -38,12 +38,11 @@ const ChartComponent = ({ data, labels, backgroundColor, title, type }) => {
       },
       scales: {
         x: {
-          // Bỏ qua categoryPercentage và barPercentage để không thay đổi kích thước cột
           grid: {
             display: false,
           },
           ticks: {
-            autoSkip: false, // Không tự động bỏ qua nhãn
+            autoSkip: false, 
           },
         }
       },
