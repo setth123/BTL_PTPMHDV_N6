@@ -62,7 +62,7 @@ const CarChart = () => {
   const type = [
     { name: 'Biểu đồ cột', id: 'bar' },
     { name: 'Biểu đồ đường', id: 'line' },
-    { name: 'Biểu đồ cột ngang', id: 'line' },
+    { name: 'Biểu đồ cột ngang', id: 'horizon' },
     { name: 'Biểu đồ radar', id: 'radar' },
   ];
 

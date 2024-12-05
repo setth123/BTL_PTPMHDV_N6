@@ -16,10 +16,11 @@ const ChartComponent = ({ data, labels, backgroundColor, title, type }) => {
           label: title,
           data: data,
           backgroundColor: backgroundColor,
-          borderColor: backgroundColor,
+          borderColor: 'rgba(255, 99, 132, 1)',
+          borderWidth:2,
           pointRadius: 5,
           pointHoverRadius: 12,
-          barThickness: 60,         // Kích thước cố định cho các cột (50 pixel hoặc giá trị n mà bạn muốn)
+          barThickness: 60,
         },
       ],
     };
@@ -62,7 +63,7 @@ const ChartComponent = ({ data, labels, backgroundColor, title, type }) => {
 
   return (
     <div style={{ overflowX: 'auto',width:'3000px', height: '600px' }}>
-       <canvas ref={chartRef} height={400} width={0}/>
+       <canvas ref={chartRef} />
     </div>
   );
 };
