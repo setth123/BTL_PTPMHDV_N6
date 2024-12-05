@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import cors from "cors";
 import carDtRouter from "./api-endpoint/getCarDataApi.js";
 import bankDtRouter from "./api-endpoint/getBankDataApi.js";
+import PriceRouter from "./api-endpoint/priceCalApi.js";
 
 const app=express();
 app.use(cors());
@@ -11,6 +12,7 @@ app.use(express.urlencoded({extended: true}));
 
 app.use('/carChart',carDtRouter)
 app.use('/bankChart',bankDtRouter)
+app.use(PriceRouter)
 mongoose.connect("mongodb+srv://thanhtkcb2004:ksiuOWOBVmMF6sP5@cluster0.uuuqs.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
 .then(async()=>{
     console.log("Successfully connected to the database");
