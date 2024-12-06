@@ -1,5 +1,5 @@
 import InterestRate from '../models/InterestRate.js'
-const getBanks=async(field)=>{
+export const getBanks=async(field)=>{
     try{
         const fields=[field,'BankName']
         const fieldsObj=fields.reduce((acc, field) => {
@@ -14,4 +14,12 @@ const getBanks=async(field)=>{
         return null;
     }
 }
-export default getBanks;
+
+export const getBankList = async() =>{
+    try {
+        return await InterestRate.find({})
+    } catch (error) {
+        console.log(err.message);
+        return null;
+    }
+}
