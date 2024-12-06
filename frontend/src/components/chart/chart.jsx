@@ -20,7 +20,7 @@ const ChartComponent = ({ data, labels, backgroundColor, title, type }) => {
           borderWidth:2,
           pointRadius: 5,
           pointHoverRadius: 12,
-          barThickness: 60,
+          barThickness: 50,
         },
       ],
     };
@@ -28,7 +28,7 @@ const ChartComponent = ({ data, labels, backgroundColor, title, type }) => {
 
     const options = {
       responsive: true,
-      maintainAspectRatio: true,
+      maintainAspectRatio: false,
       plugins: {
         legend: {
           position: "top",
@@ -39,6 +39,8 @@ const ChartComponent = ({ data, labels, backgroundColor, title, type }) => {
       },
       scales: {
         x: {
+          categoryPercentage: 0.8,
+
           grid: {
             display: false,
           },
@@ -62,8 +64,8 @@ const ChartComponent = ({ data, labels, backgroundColor, title, type }) => {
   }, [data, labels, backgroundColor, title, type]);
 
   return (
-    <div style={{ overflowX: 'auto',width:'3000px', height: '600px' }}>
-       <canvas ref={chartRef} />
+    <div style={{ display: 'flex',marginTop:'6px',justifyContent: 'center', alignItems: 'center', height: '650px', overflowX: 'auto' }}>
+       <canvas ref={chartRef} style={{ boxShadow: '0 0 10px rgba(0, 0, 0, 1)' }}  />
     </div>
   );
 };
