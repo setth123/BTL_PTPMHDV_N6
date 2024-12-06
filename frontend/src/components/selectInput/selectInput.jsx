@@ -1,6 +1,6 @@
 import { useState,useEffect } from "react";
 import './selectInput.css'
-const SelectInput = ({data,name,onChange}) => {
+const SelectInput = ({data,name,onChange,isRanked=false}) => {
     const [isOpen,setIsOpen]=useState(false);
     const [options,setOptions]=useState([]);
     const [selectedValue, setSelectedValue] = useState([]);
@@ -35,10 +35,26 @@ const SelectInput = ({data,name,onChange}) => {
             </div>
             {isOpen && (
                 <div className="dropdown-menu">
-                    {options.map(([key,value])=>(
-                        <div key={key} className="menu-item" onClick={() => handleSelect({key,value})}>
-                            {value.name}
-                        </div>
+                   {options.map(([key, value], index) => (
+                        isRanked ? (
+                            <div 
+                                key={key} 
+                                className={`menu-item ${index < 3 ? "highlight" : ""}`} 
+                                onClick={() => handleSelect({ key, value })}
+                            >
+                                <span style={{ fontWeight: index < 3 ? 'bold' : 'normal' }}>
+                                    {value.name} {index < 3 && "⭐"}
+                                </span>
+                            </div>
+                        ) : (
+                            <div 
+                                key={key} 
+                                className="menu-item" 
+                                onClick={() => handleSelect({ key, value })}
+                            >
+                                 {value.name}
+                            </div>
+                        )
                     ))}
                 </div>
             )}

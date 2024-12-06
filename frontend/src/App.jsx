@@ -4,15 +4,17 @@ import Header from './components/header/header'
 import HomePage from './pages/home/HomePage'
 import RcmCar from './pages/rcmCar/rcmCar'
 import CarChart from './pages/chart/carChart'
+import BankChart from './pages/chart/bankChart'
 function App() {
 
   return (
     <>
-      <Header />
       <BrowserRouter>
+      <Header />
         <Routes>
           <Route path="/" element={<HomePage/>}/>
-          <Route path='/chart' element={<CarChart/>}></Route>
+          <Route path='/carChart' element={<CarChart/>}></Route>
+          <Route path='/bankChart' element={<BankChart/>}></Route>
           <Route path='/recommendation' element={<RcmCar/>}></Route>
         </Routes>
       </BrowserRouter>
