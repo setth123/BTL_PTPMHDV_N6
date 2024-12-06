@@ -5,6 +5,7 @@ import HomePage from './pages/home/HomePage'
 import RcmCar from './pages/rcmCar/rcmCar'
 import CarChart from './pages/chart/carChart'
 import BankChart from './pages/chart/bankChart'
+import PriceCalculate from './pages/priceCal/priceCal'
 function App() {
 
   return (
@@ -16,6 +17,7 @@ function App() {
           <Route path='/carChart' element={<CarChart/>}></Route>
           <Route path='/bankChart' element={<BankChart/>}></Route>
           <Route path='/recommendation' element={<RcmCar/>}></Route>
+          <Route path='/calculate' element={<PriceCalculate/>}></Route>
         </Routes>
       </BrowserRouter>
     </>

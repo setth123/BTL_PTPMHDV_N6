@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 const Navigation = () => {
     return (
         <div className='navbar'>
-            <Link to="/s" className="nav-item">Tính giá trả góp</Link>
+            <Link to="/calculate" className="nav-item">Tính giá trả góp</Link>
             <Link to="/a" className="nav-item">So sánh xe</Link>
             <Link to="/d" className="nav-item">So sánh ngân hàng</Link>
             <Link to="/carChart" className="nav-item">Biểu đồ thông tin xe</Link>
