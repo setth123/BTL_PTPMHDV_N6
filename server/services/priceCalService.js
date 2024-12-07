@@ -6,7 +6,7 @@ export const getPriceCal = async(carVerId, bankId, downPayRate, loanTerm)=>{
         const car = await carVersion.findOne({ _id: carVerId }).select('price');
         const bank = await InterestRate.findOne({_id: bankId}).select('Rate');
 
-        const price = car.price;
+        const price = car.price*1000000;
         const rate = bank.Rate;
 
         const downPayment = (downPayRate / 100) * price; // Số tiền trả trước
@@ -25,11 +25,11 @@ export const getPriceCal = async(carVerId, bankId, downPayRate, loanTerm)=>{
 
             schedule.push({
                 paymentPeriod: `Tháng ${month}`,
-                startingBalance: parseFloat(remainingBalance.toFixed(2)),
-                principalPayment: parseFloat(principalPayment.toFixed(2)),
-                interestPayment: parseFloat(interestPayment.toFixed(2)),
-                totalPayment: parseFloat(totalPayment.toFixed(2)),
-                endingBalance: parseFloat(endingBalance.toFixed(2)),
+                startingBalance: (parseFloat(remainingBalance.toFixed(2))),
+                principalPayment: (parseFloat(principalPayment.toFixed(2))),
+                interestPayment: (parseFloat(interestPayment.toFixed(2))),
+                totalPayment: (parseFloat(totalPayment.toFixed(2))),
+                endingBalance: (parseFloat(endingBalance.toFixed(2))),
             });
 
             remainingBalance = endingBalance;

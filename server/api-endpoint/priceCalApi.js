@@ -3,23 +3,14 @@ import { getPriceCal } from '../services/priceCalService.js';
 
 const PriceRouter = express.Router();
 
-/**
- * POST /calculate
- * Body yêu cầu:
- * {
- *   "carVerId": "ID của phiên bản xe",
- *   "bankId": "ID của ngân hàng",
- *   "downPayRate": "Phần trăm trả trước",
- *   "loanTerm": "Thời hạn trả góp (năm)"
- * }
- */
-PriceRouter.post('/calculate', async (req, res) => {
-    const { carVerId, bankId, downPayRate, loanTerm } = req.body;
 
-    
-    if (!carVerId || !bankId || typeof downPayRate !== 'number' || typeof loanTerm !== 'number') {
-        return res.status(400).json({ message: 'Invalid input data' });
-    }
+PriceRouter.post('/calculate/:carverid/:bankid/:downpayrate/:loanterm', async (req, res) => {
+    const { carverid, bankid, downpayrate, loanterm } = req.params;
+
+    const carVerId = carverid;
+    const bankId = bankid;
+    const downPayRate = parseFloat(downpayrate);
+    const loanTerm = parseInt(loanterm);
 
     try {
 
