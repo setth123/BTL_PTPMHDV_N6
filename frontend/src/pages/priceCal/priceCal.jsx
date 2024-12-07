@@ -85,15 +85,22 @@ const priceCalculate = () => {
     fetchBanksData();
   }, []);
 
-  const downPaymentOptions = {value: 20}
+  const downPayRateOptions = [{ value: 20, label: '20%' }, { value: 30, label: '30%' }];
 
   return (
     <>
-      <div className='selectOpt'>
+      <div >
         <SelectInput data={cars} name={'Mẫu xe'} onChange={(value) => setCarOpt(value)} isRanked/>
         <SelectInput data={carVers} name={'Phiên bản xe'} onChange={(value) => setVerOpt(value)} isRanked/>
         <SelectInput data={banks} name={'Ngân hàng'} onChange={(value) => setBankOpt(value)} isRanked/>
+        <select onChange={(e) => setDownPayRate(e.target.value)} placeholdder='Số tiền trả trước'>
+          
+          {downPayRateOptions.map((option) => (
+            <option key={option.value} value={option.value}>{option.label}</option>
+          ))}
+        </select>
       </div>
+      
     </>
   );
 }
