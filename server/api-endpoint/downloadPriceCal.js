@@ -1,5 +1,5 @@
-import express from 'express'; 
-import downloadService from '../services/downloadService.js'; 
+import express from 'express';
+import downloadService from '../services/downloadService.js';
 
 const router = express.Router();
 
@@ -11,15 +11,15 @@ router.post('/downloadPriceCal', (req, res) => {
         return res.status(400).json({ message: 'Dữ liệu không hợp lệ.' });
     }
 
-    // Gọi service để tạo file Excel
-    const filePath = downloadService.createExcelFile(data, 'installment_schedule.xlsx');
+    // Tạo file Excel
+    const excelBuffer = downloadService.createExcelFile(data);
 
-    // Gửi tệp file về phía frontend
-    res.sendFile(filePath, (err) => {
-        if (err) {
-            return res.status(500).json({ message: 'Lỗi khi tải file.' });
-        }
-    });
+    // Cài đặt tiêu đề cho phản hồi
+    res.setHeader('Content-Disposition', 'attachment; filename=installment_schedule.xlsx');
+    res.setHeader('Content-Type', 'application/octet-stream');
+
+    // Gửi buffer về phía frontend
+    res.send(excelBuffer);
 });
 
 export default router;
