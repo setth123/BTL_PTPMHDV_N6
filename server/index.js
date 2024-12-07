@@ -6,7 +6,7 @@ import carRecommendRouter from "./api-endpoint/rcmCarDataApi.js";
 import bankDtRouter from "./api-endpoint/getBankDataApi.js";
 import PriceRouter from "./api-endpoint/priceCalApi.js";
 import getCarVerRouter from "./api-endpoint/getCarVerApi.js";
-
+import downloadRouter from "./api-endpoint/downloadPriceCal.js";
 const app=express();
 app.use(cors());
 app.use(express.json());
@@ -14,6 +14,8 @@ app.use(express.urlencoded({extended: true}));
 app.use('/chart',carDtRouter)
 app.use('/recommendations',carRecommendRouter)
 
+// Sử dụng router
+app.use(downloadRouter);
 
 app.use('/carChart',carDtRouter)
 app.use('/bankChart',bankDtRouter)
