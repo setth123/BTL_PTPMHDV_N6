@@ -12,6 +12,7 @@ const priceCalculate = () => {
     const [bankOpt, setBankOpt] = useState('');
     const [downPayRateOpt, setDownPayRate] = useState(0)
     const [loanTerm, setLoanTerm] = useState(0);
+    const [dataToDownload, setDataDownload] = useState(null);
     useEffect(() => {
         const fetchCarsData = async () => {
           try {
@@ -33,17 +34,7 @@ const priceCalculate = () => {
         fetchCarsData();
       }, []);
     
-    const handleSubmit = async () => {
-    try {
-      const res = await fetch(`http://localhost:4000/carChart/${carOpt}/${fieldOpt}`, {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
-      });
-      
-    } catch (err) {
-      console.log('Error fetching carsversion data: ', err);
-    }
-  };
+    
 
   useEffect(() => {
     const fetchVersData = async () => {
@@ -94,7 +85,7 @@ const priceCalculate = () => {
       try {
         
     
-        const response = await fetch(`http://localhost:4000/calculate/${carVerOpt}/${bankOpt}/${downPayRateOpt}/${loanTerm}`, {
+        const response = await fetch(`http://localhost:4000/calculate/${carOpt}/${carVerOpt}/${bankOpt}/${downPayRateOpt}/${loanTerm}`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -104,8 +95,9 @@ const priceCalculate = () => {
         if (!response.ok) {
           throw new Error('Request failed with status ' + response.status);
         }
-    
+        
         const data = await response.json();
+        setDataDownload(data.schedule);
         console.log('Loan Calculation Response:', data);
     
         setLoanDetails({
@@ -120,7 +112,28 @@ const priceCalculate = () => {
       }
     };
   
-  
+    const handleDownload = async() => {
+      try {
+        const response = await fetch('http://localhost:4000/downloadPriceCal', {
+          method : 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body : JSON.stringify(dataToDownload),
+        })
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+      a.href = url;
+      a.download = 'Bảng tính khoản vay.xlsx';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      window.URL.revokeObjectURL(url);
+      } catch (error) {
+          console.error('There was a problem with the fetch operation:', error);
+      }
+    }
 
   return (
     <>
@@ -179,7 +192,9 @@ const priceCalculate = () => {
           </div>
         )}
 
-      
+        {schedule.length > 0 && (
+          <button className="download-button" onClick={handleDownload}>Download Excel</button>
+        )}
       </div>
     </>
   );

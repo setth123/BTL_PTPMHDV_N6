@@ -1,8 +1,25 @@
 import carVersion from "../models/CarVersion.js";
 import InterestRate from "../models/InterestRate.js";
+import Car from "../models/Car.js";
 
-export const getPriceCal = async(carVerId, bankId, downPayRate, loanTerm)=>{
+export const getPriceCal = async(carId, carVerId, bankId, downPayRate, loanTerm)=>{
     try {
+        const updateCar=await Car.findOneAndUpdate(
+            {_id:carId},
+            {$inc:{'viewed':1}},
+            {new:true}
+        )
+
+        const updateVer=await carVersion.findOneAndUpdate(
+            {_id:carVerId},
+            {$inc:{'viewed':1}},
+            {new:true}
+        )
+        const updateBank=await InterestRate.findOneAndUpdate(
+            {_id:bankId},
+            {$inc:{'viewed':1}},
+            {new:true}
+        )
         const car = await carVersion.findOne({ _id: carVerId }).select('price');
         const bank = await InterestRate.findOne({_id: bankId}).select('Rate');
 
